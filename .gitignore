@@ -1,0 +1,7 @@
+BuildOutput/*
+DscBuildOutput/*
+modules/*
+.kitchen/*
+*/bin/*
+**.bak
+!**/README.md
