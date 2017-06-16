@@ -52,7 +52,7 @@ foreach ($provider in $providers.Keys) {
     'Chocolatey' = @{
         DependencyType = 'Package'
         Target = 'PackageProviderBootStrap\bin\Chocolatey\'
-        Source = 'nuget'
+        Source = 'NuGet'
     }
 
 }
