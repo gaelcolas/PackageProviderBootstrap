@@ -39,8 +39,9 @@ $swidxml.SoftwareIdentity.Link.where{$_.Rel -eq 'package'} | % {
 foreach ($provider in $providers.Keys) {
     $iwr = (iwr $providers[$provider] -UseBasicParsing)
     $xml = [xml][System.Text.Encoding]::ASCII.GetString($iwr.content)
+    $version = $xml.SoftwareIdentity.meta.providerVersion
     $xml.SoftwareIdentity.link | % {
-        $providerPath = ".\PackageProviderBootstrap\bin\$provider"
+        $providerPath = ".\PackageProviderBootstrap\bin\providers\$provider\$version"
         if (!(Test-Path $providerPath)) { mkdir $providerPath}
         iwr $_.href -OutFile "$providerPath\$($_.targetfileName)"
     }
