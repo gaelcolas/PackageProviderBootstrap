@@ -2,6 +2,9 @@ BuildOutput/*
 DscBuildOutput/*
 modules/*
 .kitchen/*
-*/bin/*
 **.bak
+.kitchen.local.yml
+
+**/bin
+
 !**/README.md

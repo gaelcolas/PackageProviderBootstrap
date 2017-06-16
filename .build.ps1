@@ -4,7 +4,7 @@ Param (
     $Tasks,
 
     [switch]
-    $NoDependency,
+    $ResolveDependency,
 
     [String]
     $BuildOutput = "BuildOutput",
@@ -17,9 +17,6 @@ Param (
 
     [Switch]
     $ForceEnvironmentVariables = [switch]$true,
-
-    [String]
-    $DependencyTarget = "$BuildOutput/modules",
 
     $MergeList = @('enum*',[PSCustomObject]@{Name='class*';order={(Import-PowerShellDataFile .\SampleModule\Classes\classes.psd1).order.indexOf($_.BaseName)}},'priv*','pub*')
     ,$CodeCoverageThreshold = 0
@@ -36,7 +33,7 @@ Process {
             "Importing file $($_.BaseName)" | Write-Verbose
             . $_.FullName 
         }
-
+    task none {}
     task .  Clean,
             SetBuildEnvironment,
             UnitTests,
@@ -57,7 +54,6 @@ begin {
     function Resolve-Dependency {
         [CmdletBinding()]
         param()
-        $VerbosePreference = 'Continue'
 
         if (!(Get-PackageProvider -Name NuGet -ForceBootstrap)) {
             $providerBootstrapParams = @{
@@ -65,6 +61,7 @@ begin {
                 force = $true
                 ForceBootstrap = $true
             }
+            if($PSBoundParameters.ContainsKey('verbose')) { $providerBootstrapParams.add('verbose',$verbose)}
             if ($GalleryProxy) { $providerBootstrapParams.Add('Proxy',$GalleryProxy) }
             $null = Install-PackageProvider @providerBootstrapParams
             Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
@@ -78,7 +75,9 @@ begin {
                 AllowClobber = $true
                 Confirm = $false
                 Force = $true
+                Scope = 'CurrentUser'
             }
+            if($PSBoundParameters.ContainsKey('verbose')) { $InstallPSDependParams.add('verbose',$verbose)}
             if ($GalleryRepository) { $InstallPSDependParams.Add('Repository',$GalleryRepository) }
             if ($GalleryProxy)      { $InstallPSDependParams.Add('Proxy',$GalleryProxy) }
             if ($GalleryCredential) { $InstallPSDependParams.Add('ProxyCredential',$GalleryCredential) }
@@ -89,58 +88,12 @@ begin {
             Force = $true
             Path = "$PSScriptRoot\Dependencies.psd1"
         }
-
+        if($PSBoundParameters.ContainsKey('verbose')) { $PSDependParams.add('verbose',$verbose)}
         Invoke-PSDepend @PSDependParams
         Write-Verbose "Project Bootstrapped, returning to Invoke-Build"
     }
 
-    if (!$NoDependency) {
-        Resolve-Dependency -Verbose
+    if ($ResolveDependency) {
+        Resolve-Dependency -Verbose:$verbose
     }
 }
-
-#task . ResolveDependencies, SetBuildVariable, UnitTestsStopOnFail, IntegrationTests
-<#
-
-### Idea to toy with, from Brandon Pagett
-
-Task Build {
-    With PSDeploy {
-        Tag Build
-        StepVersion Minor
-        DependingOn Init
-   }
-}
-
-### Or 
-
-BuildWorkflow SampleBuild {
-    Task Init {
-        With BuildHelpers {
-            Task Clean
-        }
-    }
-    
-    Task Build {
-        With PSDeploy {
-            Task Deploy
-            Tag Build
-            StepVersion Minor
-            DependingOn Init
-        }
-    }
-    
-    Task Test {
-        Path "$ProjectRoot\Tests"
-        DependingOn Build
-    }
-    Task Publish {
-        With PSDeploy {
-            Tag Publish
-            DependingOn Test
-        }
-    }
-}
-
-
-#>
