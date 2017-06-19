@@ -4,15 +4,70 @@
             {
                 "Name": "Ensure",
                 "Type": "String",
-                "Attribute": "Read",
+                "Attribute": "Required",
                 "ValidateSet": ["Present","Absent"],
                 "Description": "Says whether the Chocolatey software is installed on the machine."
             },
             {
-                "Name": "InstallKey",
+                "Name": "Scope",
+                "Type": "String",
+                "ValidateSet": ["CurrentUser","AllUsers"],
+                "Attribute": "Write",
+                "Description": "Scope to install the provider. System wide or user scope"
+            },
+            {
+                "Name": "RunKey",
                 "Type": "String",
                 "Attribute": "Key",
-                "Description": "At least one property of the DSC resource must be a key"
+                "Description": "Key to uniquely identify the configuration item."
+            }
+        ]
+    },
+    {
+        "ChocolateyPrototypeBootstrapDsc": [
+            {
+                "Name": "Ensure",
+                "Type": "String",
+                "Attribute": "Required",
+                "ValidateSet": ["Present","Absent"],
+                "Description": "Says whether the Chocolatey Prototype provider is installed on the machine."
+            },
+            {
+                "Name": "Scope",
+                "Type": "String",
+                "ValidateSet": ["CurrentUser","AllUsers"],
+                "Attribute": "Write",
+                "Description": "Scope to install the provider. System wide or user scope"
+            },
+            {
+                "Name": "RunKey",
+                "Type": "String",
+                "Attribute": "Key",
+                "Description": "Key to uniquely identify the configuration item."
+            }
+        ]
+    },
+    {
+        "NugetBootstrapDsc": [
+            {
+                "Name": "Ensure",
+                "Type": "String",
+                "Attribute": "Required",
+                "ValidateSet": ["Present","Absent"],
+                "Description": "Says whether the NuGet provider is installed on the machine."
+            },
+            {
+                "Name": "Scope",
+                "Type": "String",
+                "ValidateSet": ["CurrentUser","AllUsers"],
+                "Attribute": "Write",
+                "Description": "Scope to install the provider. System wide or user scope"
+            },
+            {
+                "Name": "RunKey",
+                "Type": "String",
+                "Attribute": "Key",
+                "Description": "Key to uniquely identify the configuration item."
             }
         ]
     }

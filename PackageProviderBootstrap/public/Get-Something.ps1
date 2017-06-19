@@ -1,4 +1,4 @@
-function Get-Something {
+function Install-PackageProviderFromFile {
     <#
       .SYNOPSIS
       Sample Function to return input string.
@@ -10,7 +10,7 @@ function Get-Something {
       Get-Something -Data 'Get me this text'
 
 
-      .PARAMETER Data
+      .PARAMETER Scope
       The Data parameter is the data that will be returned without transformation.
 
       #>
@@ -24,14 +24,24 @@ function Get-Something {
             ,ValueFromPipeline
             ,ValueFromPipelineByPropertyName
             )]
+        [ValidateSet('nuget','chocolatey','psl')]
         [String]
-        $Data
+        $ProviderName,
+
+        [Parameter(
+            ValueFromPipeline
+            ,ValueFromPipelineByPropertyName
+            )]
+        [ValidateSet('AllUsers','CurrentUser')]
+        [String]
+        $Scope = 'CurrentUser'
     )
 
     Process {
         if ($pscmdlet.ShouldProcess($Data)) {
-            Write-Verbose ('Returning the data: {0}' -f $Data)
-            Get-PrivateFunction -PrivateData $Data
+            Write-Verbose ('Installing Provider {0} from lib folder for {1}' -f $ProviderName,$Scope)
+            
+            
         }
     }
 
