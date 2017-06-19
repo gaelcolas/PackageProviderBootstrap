@@ -94,6 +94,6 @@ begin {
     }
 
     if ($ResolveDependency) {
-        Resolve-Dependency -Verbose:$verbose
+        Resolve-Dependency
     }
 }
