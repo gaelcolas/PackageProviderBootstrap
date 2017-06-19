@@ -55,4 +55,10 @@ foreach ($provider in $providers.Keys) {
         Source = 'NuGet'
     }
 
+    'Nuget.exe' = @{
+        DependencyType = 'Command'
+        Source = @'
+        wget 'https://api.nuget.org/downloads/nuget.exe' -outFile 'PackageProviderBootStrap\bin\providers\nuget-anycpu.exe'
+'@
+    }
 }
