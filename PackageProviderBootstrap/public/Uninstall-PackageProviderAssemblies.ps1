@@ -51,6 +51,7 @@ function Uninstall-PackageProviderAssemblies {
                 'AllUsers'    { $Env:ProgramFiles }
                 'CurrentUser' { $Env:LOCALAPPDATA }
             }
+            
             $TargetPath = [io.path]::Combine(
                 $ScopePath,
                 'PackageManagement\ProviderAssemblies',

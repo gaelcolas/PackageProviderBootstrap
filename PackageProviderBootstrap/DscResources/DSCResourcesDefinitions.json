@@ -9,10 +9,10 @@
                 "Description": "Says whether the Chocolatey software is installed on the machine."
             },
             {
-                "Name": "Scope",
+                "Name": "InstallScope",
                 "Type": "String",
                 "ValidateSet": ["CurrentUser","AllUsers"],
-                "Attribute": "Write",
+                "Attribute": "required",
                 "Description": "Scope to install the provider. System wide or user scope"
             },
             {
@@ -33,7 +33,7 @@
                 "Description": "Says whether the Chocolatey Prototype provider is installed on the machine."
             },
             {
-                "Name": "Scope",
+                "Name": "InstallScope",
                 "Type": "String",
                 "ValidateSet": ["CurrentUser","AllUsers"],
                 "Attribute": "Write",
@@ -57,10 +57,10 @@
                 "Description": "Says whether the NuGet provider is installed on the machine."
             },
             {
-                "Name": "Scope",
+                "Name": "InstallScope",
                 "Type": "String",
                 "ValidateSet": ["CurrentUser","AllUsers"],
-                "Attribute": "Write",
+                "Attribute": "required",
                 "Description": "Scope to install the provider. System wide or user scope"
             },
             {
