@@ -36,7 +36,7 @@
                 "Name": "InstallScope",
                 "Type": "String",
                 "ValidateSet": ["CurrentUser","AllUsers"],
-                "Attribute": "Write",
+                "Attribute": "required",
                 "Description": "Scope to install the provider. System wide or user scope"
             },
             {

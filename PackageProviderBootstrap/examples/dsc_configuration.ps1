@@ -2,10 +2,10 @@ configuration Default {
     Import-DscResource -ModuleName PackageProviderBootstrap
 
     Nodes localhost {
-        ChocolateyBootstrapDsc Choco {
+        NuGetBootstrapDsc nugetprovider {
             Ensure = 'Present'
-            InstallKey = 'aa'
+            InstallScope = 'AllUsers'
+            RunKey = 'NuGet Provider Bootstrap'
         }
     }
-
 }
