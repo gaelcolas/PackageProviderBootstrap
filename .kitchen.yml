@@ -8,7 +8,7 @@ provisioner:
       debug_mode: none
     configuration_script_folder: PackageProviderBootstrap/examples
     configuration_script: dsc_configuration.ps1
-    modules_path: modules
+    modules_path: BuildOutput/Artefact
     retry_on_exit_code:
     - 35
     configuration_data_variable: configurationData

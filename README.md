@@ -1,8 +1,8 @@
 # PackageProviderBootstrap
 
-This is module with DSC resource to bootstrap Package providers.
+This is module with DSC resources to bootstrap Package providers.
 
-## Make it yours
+## Goal
 
 ---
 Generated with Plaster and the SampleModule template

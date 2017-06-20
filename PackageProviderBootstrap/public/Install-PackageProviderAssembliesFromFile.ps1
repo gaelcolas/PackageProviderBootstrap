@@ -40,6 +40,11 @@ function Install-PackageProviderAssembliesFromFile {
         [String]
         $Scope = 'CurrentUser'
     )
+    begin {
+        if(-not ($ModuleBase = $MyInvocation.Mycommand.Module.ModuleBase)) {
+            $Modulebase= (Resolve-Path "$PSScriptRoot\..").Path
+        }
+    }
 
     Process {
         Foreach ($Provider in $ProviderName) {
@@ -53,8 +58,8 @@ function Install-PackageProviderAssembliesFromFile {
                 'PackageManagement\ProviderAssemblies',
                 $Provider
             )
-            $ProviderFilePath = "$PSScriptRoot\..\bin\providers\$Provider"
-            if ($pscmdlet.ShouldProcess("Copying $PSScriptRoot\..\bin\providers\$Provider to $TargetPath")) {
+            $ProviderFilePath = "$Modulebase\bin\providers\$Provider"
+            if ($pscmdlet.ShouldProcess("Copying $Modulebase\bin\providers\$Provider to $TargetPath")) {
                 Copy-Item -Path $ProviderFilePath -Destination $TargetPath -Recurse -Force -ErrorAction Stop
             }
         }

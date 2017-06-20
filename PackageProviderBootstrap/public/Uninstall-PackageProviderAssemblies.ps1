@@ -43,6 +43,11 @@ function Uninstall-PackageProviderAssemblies {
         [String]
         $Scope = 'CurrentUser'
     )
+    begin {
+        if(-not ($ModuleBase = $MyInvocation.Mycommand.Module.ModuleBase)) {
+            $Modulebase= (Resolve-Path "$PSScriptRoot\..").Path
+        }
+    }
 
     Process {
         Foreach ($Provider in $ProviderName) {

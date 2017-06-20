@@ -42,6 +42,9 @@ function Compare-PackageProviderAssemblies {
     )
 
     begin {
+        if(-not ($ModuleBase = $MyInvocation.Mycommand.Module.ModuleBase)) {
+            $Modulebase= (Resolve-Path "$PSScriptRoot\..").Path
+        }
         $ScopePath = switch ($Scope) {
             'AllUsers'    { $Env:ProgramFiles }
             'CurrentUser' { $Env:LOCALAPPDATA }
@@ -58,7 +61,7 @@ function Compare-PackageProviderAssemblies {
                 $Provider
             )
 
-            $sourceFiles = Get-ChildItem "$PSScriptRoot\..\bin\providers\$Provider" -Recurse -ErrorAction SilentlyContinue
+            $sourceFiles = Get-ChildItem "$Modulebase\bin\providers\$Provider" -Recurse -ErrorAction SilentlyContinue
             $TargetFiles = Get-ChildItem $TargetPath -Recurse -ErrorAction SilentlyContinue
 
             if ($pscmdlet.ShouldProcess("Comparing $Provider")) {

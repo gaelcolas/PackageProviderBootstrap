@@ -1,7 +1,7 @@
 configuration Default {
     Import-DscResource -ModuleName PackageProviderBootstrap
 
-    Nodes localhost {
+    Node localhost {
         NuGetBootstrapDsc nugetprovider {
             Ensure = 'Present'
             InstallScope = 'AllUsers'
