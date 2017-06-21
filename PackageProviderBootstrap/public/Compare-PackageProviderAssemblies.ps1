@@ -67,8 +67,11 @@ function Compare-PackageProviderAssemblies {
             if ($pscmdlet.ShouldProcess("Comparing $Provider")) {
                 if(!$TargetFiles) {
                     $TargetFiles = @()
-                }                
-                Write-Output -InputObject (Compare-Object -ReferenceObject $sourceFiles -DifferenceObject $TargetFiles)
+                }
+                Write-Output -InputObject (
+                    Compare-Object -ReferenceObject $sourceFiles -DifferenceObject $TargetFiles|
+                      Where-Object {$_.SideIndicator -eq '<='}
+                )
             }
         }
     }

@@ -59,7 +59,7 @@
             {
                 "Name": "InstallDir",
                 "Type": "String",
-                "Attribute": "Write",
+                "Attribute": "write",
                 "Description": "Folder path wherethe Chocolatey Software should be installed."
             },
             {
