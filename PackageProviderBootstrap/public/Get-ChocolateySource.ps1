@@ -43,7 +43,7 @@ function Get-ChocolateySource {
                     bypassProxy = [bool]::Parse($source.bypassProxy)
                     selfService = [bool]::Parse($source.selfService)
                     priority    = [int]$source.priority
-                    username    = $source.username
+                    username    = $source.user
                     password    = $source.password
                 })
             }

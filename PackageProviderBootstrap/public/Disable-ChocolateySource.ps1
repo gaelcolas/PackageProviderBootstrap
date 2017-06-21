@@ -25,7 +25,7 @@ function Disable-ChocolateySource {
         }
         
         $ChocoArguments = @('source','disable')
-        $ChocoArguments += Get-ChocolateyDefaultArguments @PSBoundParameters
+        $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
         &$chocoCmd $ChocoArguments

@@ -1,4 +1,4 @@
-function Get-ChocolateyDefaultArguments {
+function Get-ChocolateyDefaultArgument {
     [CmdletBinding()]
     Param(
         [Parameter(
