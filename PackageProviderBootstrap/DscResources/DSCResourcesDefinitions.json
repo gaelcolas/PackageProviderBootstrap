@@ -1,30 +1,6 @@
 [
     {
-        "ChocolateyBootstrapDsc": [
-            {
-                "Name": "Ensure",
-                "Type": "String",
-                "Attribute": "Required",
-                "ValidateSet": ["Present","Absent"],
-                "Description": "Says whether the Chocolatey software is installed on the machine."
-            },
-            {
-                "Name": "InstallScope",
-                "Type": "String",
-                "ValidateSet": ["CurrentUser","AllUsers"],
-                "Attribute": "required",
-                "Description": "Scope to install the provider. System wide or user scope"
-            },
-            {
-                "Name": "RunKey",
-                "Type": "String",
-                "Attribute": "Key",
-                "Description": "Key to uniquely identify the configuration item."
-            }
-        ]
-    },
-    {
-        "ChocolateyPrototypeBootstrapDsc": [
+        "ChocolateyPrototypeBootstrap": [
             {
                 "Name": "Ensure",
                 "Type": "String",
@@ -48,7 +24,7 @@
         ]
     },
     {
-        "NugetBootstrapDsc": [
+        "NugetBootstrap": [
             {
                 "Name": "Ensure",
                 "Type": "String",
@@ -68,6 +44,29 @@
                 "Type": "String",
                 "Attribute": "Key",
                 "Description": "Key to uniquely identify the configuration item."
+            }
+        ]
+    },
+    {
+        "ChocolateyInstall": [
+            {
+                "Name": "Ensure",
+                "Type": "String",
+                "Attribute": "key",
+                "ValidateSet": ["Present","Absent"],
+                "Description": "Specifies whether the Chocolatey Software should be installed on the machine or not."
+            },
+            {
+                "Name": "InstallDir",
+                "Type": "String",
+                "Attribute": "Write",
+                "Description": "Folder path wherethe Chocolatey Software should be installed."
+            },
+            {
+                "Name": "ChocoInstallScriptUrl",
+                "Type": "String",
+                "Attribute": "Write",
+                "Description": "Optional Install script URL to download and execute to install Chocolatey Software. Leave unset to use the embedded version."
             }
         ]
     }
