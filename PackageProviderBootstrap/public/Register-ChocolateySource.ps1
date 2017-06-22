@@ -77,10 +77,10 @@ function Register-ChocolateySource {
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-        &$chocoCmd $ChocoArguments
+        &$chocoCmd $ChocoArguments | Write-Verbose
 
         if ($Disabled) {
-            &$chocoCmd @('source','disable',"-n=`"$Name`"")
+            &$chocoCmd @('source','disable',"-n=`"$Name`"") | Write-Verbose
         }
     }
 }

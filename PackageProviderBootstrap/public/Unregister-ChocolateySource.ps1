@@ -68,7 +68,7 @@ function Unregister-ChocolateySource {
             Throw "Chocolatey Software not found"
         }
 
-        if (!(Get-ChocolateySource -id $Name)) {
+        if (!(Get-ChocolateySource -Name $Name)) {
             Throw "Chocolatey Source $Name cannot be found. You can Register it using Register-ChocolateySource."
         }
         
@@ -76,6 +76,6 @@ function Unregister-ChocolateySource {
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
         
-        &$chocoCmd $ChocoArguments
+        &$chocoCmd $ChocoArguments | Write-Verbose
     }
 }

@@ -99,7 +99,6 @@ function Test-ChocolateySource {
             }
             
         }
-        
 
         Compare-Object -ReferenceObject $ReferenceSource -DifferenceObject $Source -Property $ReferenceSource.PSObject.Properties.Name
         

@@ -58,7 +58,62 @@ function Get-ChocolateyDefaultArgument {
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $NoProgress
+        $NoProgress,
+
+        [Parameter(
+            ,ValueFromPipelineByPropertyName
+        )]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $Version,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $LocalOnly,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $IdOnly,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $Prerelease,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [Switch]
+        $ApprovedOnly,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $IncludePrograms,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $ByIdOnly,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [Switch]
+        $IdStartsWith,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $Exact
 
     )
 
@@ -85,6 +140,20 @@ function Get-ChocolateyDefaultArgument {
                     "--password=`"$Password`""
                 }
             }
+            'ByTagOnly'    { '--by-tag-only' }
+            'ByIdOnly'     { '--by-id-only' }
+            'LocalOnly'    { '--local-only' }
+            'IdStartsWith' { '--id-starts-with' }
+            'ApprovedOnly' { '--approved-only'}
+            'OrderByPopularity' { '--order-by-popularity' }
+            'NotBroken'    { '--not-broken' }
+            'prerelease'   { '--prerelease' }
+            'IncludePrograms' { '--include-programs'}
+            'AllVersions'  { '--all-versions' }
+            'Version'      { "--version=`"$version`"" }
+            'exact'        { "--exact" }
+
+
         }
 
         return $ChocoArguments

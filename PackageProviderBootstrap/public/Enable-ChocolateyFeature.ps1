@@ -14,7 +14,6 @@ function Enable-ChocolateyFeature {
         )]
         [switch]
         $NoProgress
-
     )
 
     Process {
@@ -30,6 +29,6 @@ function Enable-ChocolateyFeature {
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-        &$chocoCmd $ChocoArguments
+        &$chocoCmd $ChocoArguments | Write-Verbose
     }
 }
