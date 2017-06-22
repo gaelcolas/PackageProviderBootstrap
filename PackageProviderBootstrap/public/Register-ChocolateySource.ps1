@@ -68,10 +68,6 @@ function Register-ChocolateySource {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
             Throw "Chocolatey Software not found"
         }
-
-        if (Get-ChocolateySource -id $Name) {
-            Throw "Chocolatey Source $Name already exists. You can modify it using Set-ChocolateySource."
-        }
         
         $ChocoArguments = @('source','add')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters

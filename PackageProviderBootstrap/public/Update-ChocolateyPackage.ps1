@@ -1,4 +1,4 @@
-function Install-ChocolateyPackage {
+function Update-ChocolateyPackage {
     [CmdletBinding(
         SupportsShouldProcess=$true,
         ConfirmImpact='High'
@@ -161,38 +161,24 @@ function Install-ChocolateyPackage {
         )]
         [switch]
         $StopOnFirstFailure,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [switch]
-        $SkipCache,
         
-
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $UseDownloadCache,
-
+        $UseRememberedArguments,
+        
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $SkipVirusCheck,
-
+        $IgnoreRememberedArguments,
+        
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $VirusCheck,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [ValidateNotNullOrEmpty()]
-        [int]
-        $VirusPositive
+        $ExcludePrerelease
     )
 
     begin {
@@ -203,11 +189,11 @@ function Install-ChocolateyPackage {
     }
     Process {
         foreach ($PackageName in $Name) {
-            $ChocoArguments = @('install',$PackageName)
+            $ChocoArguments = @('upgrade',$PackageName)
             $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
             Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-            if ($PSCmdlet.ShouldProcess($PackageName,"Install")) {
+            if ($PSCmdlet.ShouldProcess($PackageName,"Upgrade")) {
                 #Impact confirmed, go choco go!
                 $ChocoArguments += '-y'
                 &$chocoCmd $ChocoArguments | Write-Verbose

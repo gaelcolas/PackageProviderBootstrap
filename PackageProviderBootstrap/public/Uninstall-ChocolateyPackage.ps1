@@ -1,4 +1,4 @@
-function Install-ChocolateyPackage {
+function Uninstall-ChocolateyPackage {
     [CmdletBinding(
         SupportsShouldProcess=$true,
         ConfirmImpact='High'
@@ -161,38 +161,48 @@ function Install-ChocolateyPackage {
         )]
         [switch]
         $StopOnFirstFailure,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [switch]
-        $SkipCache,
         
-
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $UseDownloadCache,
-
+        $UseRememberedArguments,
+        
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $SkipVirusCheck,
-
+        $IgnoreRememberedArguments,
+        
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $VirusCheck,
-
+        $ExcludePrerelease,
+        
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [ValidateNotNullOrEmpty()]
-        [int]
-        $VirusPositive
+        [switch]
+        $AutoUninstaller,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $SkipAutoUninstaller,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $FailOnAutouninstaller,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $IgnoreAutoUninstallerFailure
     )
 
     begin {
@@ -203,11 +213,11 @@ function Install-ChocolateyPackage {
     }
     Process {
         foreach ($PackageName in $Name) {
-            $ChocoArguments = @('install',$PackageName)
+            $ChocoArguments = @('uninstall',$PackageName)
             $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
             Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-            if ($PSCmdlet.ShouldProcess($PackageName,"Install")) {
+            if ($PSCmdlet.ShouldProcess($PackageName,"Upgrade")) {
                 #Impact confirmed, go choco go!
                 $ChocoArguments += '-y'
                 &$chocoCmd $ChocoArguments | Write-Verbose

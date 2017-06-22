@@ -288,8 +288,49 @@ function Get-ChocolateyDefaultArgument {
             ValueFromPipelineByPropertyName
         )]
         [int]
-        $Timeout
+        $Timeout,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $UseRememberedArguments,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $IgnoreRememberedArguments,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $ExcludePrerelease,
 
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $AutoUninstaller,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $SkipAutoUninstaller,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $FailOnAutouninstaller,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $IgnoreAutoUninstallerFailure
     )
 
     Process {
@@ -322,10 +363,10 @@ function Get-ChocolateyDefaultArgument {
             'Proxy'             { "--Proxy=`"$Proxy`"" }
             'ProxyCredential'   {
                 if ($ProxyUsername = $Credential.Username) {
-                    "--proxy-user=`"$Username`""
+                    "--proxy-user=`"$ProxyUsername`""
                 }
                 if($ProxyPassword = $Credential.GetNetworkCredential().Password) {
-                    "--proxy-password=`"$Password`""
+                    "--proxy-password=`"$ProxyPassword`""
                 }
             }
             'ProxyBypassList'   { "--proxy-bypass-list=`"$($ProxyBypassList -join ',')`"" }
@@ -375,7 +416,15 @@ function Get-ChocolateyDefaultArgument {
             'InstallArgumentsSensitive' { "--install-arguments-sensitive=`"$InstallArgumentsSensitive`""}
             'PackageArgumentsSensitive' { "--package-arguments-sensitive=`"$PackageArgumentsSensitive`""}
             'MaxDownloadRate'   { "--maximum-download-bits-per-second=$MaxDownloadRate" }
+            'IgnoreRememberedArguments' { '--ignore-remembered-arguments' }
+            'UseRememberedArguments' { '--use-remembered-options' }
+            'ExcludePrerelease'  { '--exclude-pre' }
 
+            #uninstall package params
+            'AutoUninstaller'     { '--use-autouninstaller'  }
+            'SkipAutoUninstaller' { '--skip-autouninstaller' }
+            'FailOnAutouninstaller' { '--fail-on-autouninstaller' }
+            'IgnoreAutoUninstallerFailure' { '--ignore-autouninstaller-failure' }
         }
 
         return $ChocoArguments
