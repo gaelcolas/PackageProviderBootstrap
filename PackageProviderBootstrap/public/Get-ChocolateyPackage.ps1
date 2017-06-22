@@ -87,13 +87,18 @@ function Get-ChocolateyPackage {
             #line should be Name,version,approved,Description
             $SplittedLine = $_.split(' ',4)
             if($SplittedLine[1] -as [version]){
-                [PSCustomObject]@{
+                $package = [PSCustomObject]@{
                     PSTypeName = 'Chocolatey.Package'
-                    Name = $SplittedLine[0]
-                    Version = $SplittedLine[1]
-                    Approved = if($SplittedLine[2] -eq '[Approved]'){ $true } else { $false }
-                    Description = $SplittedLine[3]
+                    Name       = $SplittedLine[0]
+                    Version    = $SplittedLine[1]
                 }
+                if(!$LocalOnly) {
+                    $Package | add-member -MemberType NoteProperty -Name Description -value $SplittedLine[3]
+                    $Package | add-member -MemberType NoteProperty -Name Approved -value $(
+                        if($SplittedLine[2] -eq '[Approved]'){ $true } else { $false }
+                    )
+                }
+                $Package
             }
             
         }
