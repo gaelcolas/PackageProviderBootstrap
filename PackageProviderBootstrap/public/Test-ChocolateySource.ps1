@@ -54,31 +54,52 @@ function Test-ChocolateySource {
             Write-Verbose "Chocolatey Source $Name cannot be found."
             Return $false
         }
-        
-        if($Credential) {
-            Write-Warning 'Comparing source with cred not yet supported'
-            $guid = (New-Guid).ToString()
-            $newSource = $PSBoundParameters
-            $NewSource['name'] = $guid
-            Register-ChocolateySource @newSource
-            $ReferenceSource = Get-ChocolateySource -Name $guid
-            $ReferenceSource.Name = $PSBoundParameters.Name
-        }
-        else {
-            $ReferenceSource = [PSCustomObject]@{}
 
-            foreach ( $Property in $PSBoundParameters.keys.where{
-                $_ -notin ([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters)}
-            )
-            {
+        $ReferenceSource = [PSCustomObject]@{}
+        foreach ( $Property in $PSBoundParameters.keys.where{
+            $_ -notin ([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters)}
+        )
+        {
+            if('Credential' -ne $Property) {
                 $MemberParams = @{
                     MemberType = 'NoteProperty' 
                     Name = $Property 
                     Value = $PSboundParameters[$Property]
                 }
                 $ReferenceSource | Add-Member @MemberParams
+
+                
             }
+            else {
+                $PasswordParam = @{
+                    MemberType = 'NoteProperty' 
+                    Name = 'password' 
+                    Value = 'Reference Object Password'
+                }
+                $UserNameParam = @{
+                    MemberType = 'NoteProperty' 
+                    Name = 'username' 
+                    Value = $Credential.UserName
+                }
+                $ReferenceSource | Add-Member @PasswordParam -passthru | Add-Member @UserNameParam
+
+                $securePasswordStr = $Source.Password
+                $SecureStr = [System.Convert]::FromBase64String($SecurePasswordStr)
+                $salt = [System.Text.Encoding]::UTF8.GetBytes("Chocolatey")
+                $PasswordBytes = [Security.Cryptography.ProtectedData]::Unprotect($SecureStr, $salt, [Security.Cryptography.DataProtectionScope]::LocalMachine)
+                if([system.text.encoding]::UTF8.GetString($PasswordBytes) -eq $Credential.GetNetworkCredential().Password) {
+                    Write-Verbose "The Password Match"
+                    $Source.Password = 'Reference Object Password'
+                }
+                else {
+                    Write-Verbose "The Password Do not Match"
+                    $Source.Password = 'Source Object Password'
+                }
+
+            }
+            
         }
+        
 
         Compare-Object -ReferenceObject $ReferenceSource -DifferenceObject $Source -Property $ReferenceSource.PSObject.Properties.Name
         
