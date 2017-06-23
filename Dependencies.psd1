@@ -15,11 +15,13 @@
     psdeploy = 'latest'
 
     xDscResourceDesigner ='latest'
-    # 'https://chocolatey.org/install.ps1' = @{
-    #     DependencyType = 'FileDownload'
-    #     Target = 'PackageProviderBootStrap\bin\Chocolatey\'
-    #     AddToPath = $False
-    # }
+
+
+    'https://chocolatey.org/install.ps1' = @{
+        DependencyType = 'FileDownload'
+        Target = 'PackageProviderBootStrap\bin\Chocolatey\'
+        AddToPath = $False
+    }
 
     'ProviderBinaries' = @{
         DependencyType = 'Command'
