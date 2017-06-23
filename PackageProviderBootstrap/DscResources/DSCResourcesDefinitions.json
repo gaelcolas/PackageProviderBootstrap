@@ -88,7 +88,7 @@
             {
                 "Name": "Source",
                 "Type": "String",
-                "Attribute": "Require",
+                "Attribute": "Write",
                 "Description": ""
             },
             {
