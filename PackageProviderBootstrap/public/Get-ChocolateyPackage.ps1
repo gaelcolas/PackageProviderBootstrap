@@ -61,7 +61,24 @@ function Get-ChocolateyPackage {
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $Exact
+        $Exact,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        $Source,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [PSCredential]
+        $Credential,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [String]
+        $CacheLocation
 
     )
 
@@ -83,7 +100,7 @@ function Get-ChocolateyPackage {
         }
         $ChocoListOutput = &$chocoCmd $ChocoArguments
 
-        $ChocoListOutput | % {
+        $ChocoListOutput | Foreach-Object {
             #line should be Name,version,approved,Description
             $SplittedLine = $_.split(' ',4)
             if($SplittedLine[1] -as [version]){

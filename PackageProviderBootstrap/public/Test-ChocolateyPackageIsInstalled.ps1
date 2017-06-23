@@ -14,7 +14,24 @@ function Test-ChocolateyPackageIsInstalled {
         )]
         [ValidateNotNullOrEmpty()]
         [String]
-        $Version
+        $Version,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        $Source,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [PSCredential]
+        $Credential,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [String]
+        $CacheLocation
 
     )
 
@@ -34,6 +51,9 @@ function Test-ChocolateyPackageIsInstalled {
 
         if ($Version -eq 'latest') {
             $ReferenceObject = Get-ChocolateyPackage @SearchPackageParams -Exact
+            if(!$ReferenceObject) {
+                Throw "Latest version of Package $name not found. Verify that the sources are reachable."
+            }
         }
         else {
             $ReferenceObject = [PSCustomObject]@{
