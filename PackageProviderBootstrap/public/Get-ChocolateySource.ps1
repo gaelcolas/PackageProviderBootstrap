@@ -27,7 +27,7 @@ function Get-ChocolateySource {
         foreach ($id in $Name) {
             if ($id -ne '*') {
                 Write-Verbose ('Searching for Source with id ${0}' -f [Security.SecurityElement]::Escape($id))
-                $sourceNodes = $ChocoXml.SelectNodes("//source[@id='$([Security.SecurityElement]::Escape($id))']")
+                $sourceNodes = $ChocoXml.SelectNodes("//source[translate(@id,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($id.ToLower()))']")
             }
             else {
                 Write-Verbose 'Returning all Sources configured'

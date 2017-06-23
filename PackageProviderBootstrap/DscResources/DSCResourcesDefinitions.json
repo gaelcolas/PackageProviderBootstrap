@@ -88,7 +88,7 @@
             {
                 "Name": "Source",
                 "Type": "String",
-                "Attribute": "write",
+                "Attribute": "Require",
                 "Description": ""
             },
             {
@@ -141,7 +141,7 @@
             {
                 "Name": "enabled",
                 "Type": "boolean",
-                "Attribute": "Require",
+                "Attribute": "read",
                 "Description": ""
             },
             {

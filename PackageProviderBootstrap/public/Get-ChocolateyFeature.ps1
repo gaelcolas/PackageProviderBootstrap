@@ -27,7 +27,7 @@ function Get-ChocolateyFeature {
         foreach ($Name in $Feature) {
             if ($Name -ne '*') {
                 Write-Verbose ('Searching for Feature named ${0}' -f [Security.SecurityElement]::Escape($Name))
-                $FeatureNodes = $ChocoXml.SelectNodes("//feature[@name='$([Security.SecurityElement]::Escape($Name))']")
+                $FeatureNodes = $ChocoXml.SelectNodes("//feature[translate(@name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($Name.ToLower()))']")
             }
             else {
                 Write-Verbose 'Returning all Sources configured'

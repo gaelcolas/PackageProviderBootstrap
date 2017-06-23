@@ -18,19 +18,19 @@ function Register-ChocolateySource {
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $Disabled,
+        $Disabled = $false,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $BypassProxy,
+        $BypassProxy = $false,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
-        $SelfService,
+        $SelfService = $false,
 
         [Parameter(
             ValueFromPipelineByPropertyName
@@ -68,7 +68,17 @@ function Register-ChocolateySource {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
             Throw "Chocolatey Software not found"
         }
-        
+
+        if(!$PSBoundParameters.containskey('Disabled')){
+            $null = $PSBoundParameters.add('Disabled',$Disabled)
+        }
+        if(!$PSBoundParameters.containskey('SelfService')){
+            $null = $PSBoundParameters.add('SelfService',$SelfService)
+        }
+        if(!$PSBoundParameters.containskey('BypassProxy')){
+            $null = $PSBoundParameters.add('BypassProxy',$BypassProxy)
+        }
+
         $ChocoArguments = @('source','add')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
