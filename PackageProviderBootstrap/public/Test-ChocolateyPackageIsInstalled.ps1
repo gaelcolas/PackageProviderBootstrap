@@ -61,21 +61,34 @@ function Test-ChocolateyPackageIsInstalled {
             }
             if($Version) { $ReferenceObject | Add-Member -MemberType NoteProperty -Name version -value $Version }
         }
-
+        $PackageFound = $false
         $MatchingPackages = $InstalledPackages | Where-Object {
-            Write-Verbose "Testing $($_.Name) against $($ReferenceObject.Name)"
-            $ReferenceObject.PSObject.Properties.Name | Write-Verbose
-            "Installed Package: " + $_ | Write-Verbose
-            "Reference Package: " +$ReferenceObject | Write-verbose
-            -not (Compare-Object -ReferenceObject $ReferenceObject -DifferenceObject $_ -Property $ReferenceObject.PSObject.Properties.Name)
+            Write-Debug "Testing $($_.Name) against $($ReferenceObject.Name)"
+            if($_.Name -eq $ReferenceObject.Name) {
+                $PackageFound = $True;
+                Write-Debug "Package Found"
+                
+                if ($_.version -ge $ReferenceObject.version) {
+                    return $true
+                }
+                else {
+                    return $false
+                }
+            }
         }
         if ($MatchingPackages) {
             Write-Verbose ("'{0}' packages match the given properties." -f $MatchingPackages.Count)
-            $True
+            Write-Output ([PSCustomObject]@{
+                PackagePresent          =  $PackageFound
+                VersionGreaterOrEqual   =  $True
+            })
         }
         else {
             Write-Verbose "No packages match the selection."
-            $False
+            Write-Output ([PSCustomObject]@{
+                PackagePresent          =  $PackageFound
+                VersionGreaterOrEqual   =  $False
+            })
         }
     }
 }

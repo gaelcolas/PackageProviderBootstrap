@@ -210,7 +210,10 @@ function Install-ChocolateyPackage {
             if ($PSCmdlet.ShouldProcess($PackageName,"Install")) {
                 #Impact confirmed, go choco go!
                 $ChocoArguments += '-y'
-                &$chocoCmd $ChocoArguments | Write-Verbose
+                $ChocoOut = &$chocoCmd $ChocoArguments
+                if($ChocoOut) {
+                    Write-Output $ChocoOut
+                }
             }
         }
     }
